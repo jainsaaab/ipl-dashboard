@@ -25,7 +25,7 @@ public class TeamController {
 	private final TeamRepository teamRepository;
 	private final MatchRepository matchRepository;
 
-	@GetMapping("/team")
+	@GetMapping("/teams")
 	public Iterable<Team> getAllTeams() {
 		return teamRepository.findAll();
 	}

@@ -1,0 +1,19 @@
+.TeamPage {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+
+    .team-name-section {
+        grid-column: span 3;
+    }
+
+    .win-loss-section {
+        grid-column: span 1;
+    }
+
+    .match-detail-section {
+        grid-column: span 4;
+    }
+}

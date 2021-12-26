@@ -5,7 +5,6 @@ import { MatchDetailCard } from '../components/MatchDetailCard'
 export const MatchPage = () => {
     const [matches, setMatches] = useState([]);
     const { teamName, year } = useParams();
-    console.log(`${teamName}, ${year}`);
 
     useEffect(() => {
         const fetchMatches = async () => {

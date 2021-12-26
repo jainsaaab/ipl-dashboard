@@ -7,13 +7,29 @@
 
     .team-name-section {
         grid-column: span 3;
+        justify-self: start;
+        align-self: end;
+    }
+
+    .team-name {
+        font-size: 4rem;
+        margin-bottom: 20px;
     }
 
     .win-loss-section {
         grid-column: span 1;
+        justify-self: center;
+        padding: 40px;
+        text-align: center;
     }
 
     .match-detail-section {
         grid-column: span 4;
+    }
+
+    .more-link {
+        align-self: center;
+        justify-self: center;
+        font-size: 1.5rem;
     }
 }

@@ -13,21 +13,25 @@ import com.jainsaab.ipldashboard.model.Match;
 import com.jainsaab.ipldashboard.model.Team;
 import com.jainsaab.ipldashboard.repository.MatchRepository;
 import com.jainsaab.ipldashboard.repository.TeamRepository;
+import com.jainsaab.ipldashboard.utils.Utility;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
 public class TeamController {
 	private final TeamRepository teamRepository;
 	private final MatchRepository matchRepository;
+	private final Utility utility;
 
 	@GetMapping("/teams")
 	public Iterable<Team> getAllTeams() {
-		return teamRepository.findAll();
+		var response = teamRepository.findAll();
+		log.info("response :: {}", () -> utility.writeObjectAsString(response));
+		return response;
 	}
 	
 	@GetMapping("/team/{teamName}")
@@ -35,6 +39,9 @@ public class TeamController {
 		log.info("request came for '/team/{}'", teamName);
 		Team team = teamRepository.findByTeamName(teamName);
 		team.setMatches(matchRepository.findLatestMatchesByTeam(teamName, 4));
+		
+		log.info("response :: {}", () -> utility.writeObjectAsString(team));
+		
 		return team;
 	}
 
@@ -44,6 +51,9 @@ public class TeamController {
 		LocalDate startDate = LocalDate.of(year, 1, 1);
 		LocalDate endDate = LocalDate.of(year + 1, 1, 1);
 
-		return matchRepository.getMatchesByTeamBetweenDates(teamName, startDate, endDate);
+		var response = matchRepository.getMatchesByTeamBetweenDates(teamName, startDate, endDate);
+		log.info("response :: {}", () -> utility.writeObjectAsString(response));
+		
+		return response;
 	}
 }

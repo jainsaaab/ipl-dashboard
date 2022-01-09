@@ -3,7 +3,6 @@ package com.jainsaab.ipldashboard.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,8 +25,9 @@ public class TeamController {
 	private final MatchRepository matchRepository;
 	private final Utility utility;
 
-	@GetMapping("/teams")
+	@GetMapping("/team")
 	public Iterable<Team> getAllTeams() {
+		log.info("request came for '/team");
 		var response = teamRepository.findAll();
 		log.info("response :: {}", () -> utility.writeObjectAsString(response));
 		return response;

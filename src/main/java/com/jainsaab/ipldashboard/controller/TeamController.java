@@ -25,11 +25,11 @@ public class TeamController {
 	private final MatchRepository matchRepository;
 	private final Utility utility;
 
-	@GetMapping("/team")
+	@GetMapping("/teams")
 	public Iterable<Team> getAllTeams() {
 		log.info("request came for '/team");
 		var response = teamRepository.findAll();
-		log.info("response :: {}", () -> utility.writeObjectAsString(response));
+//		log.info("response :: {}", () -> utility.writeObjectAsString(response));
 		return response;
 	}
 	
@@ -39,7 +39,7 @@ public class TeamController {
 		Team team = teamRepository.findByTeamName(teamName);
 		team.setMatches(matchRepository.findLatestMatchesByTeam(teamName, 4));
 		
-		log.info("response :: {}", () -> utility.writeObjectAsString(team));
+//		log.info("response :: {}", () -> utility.writeObjectAsString(team));
 		
 		return team;
 	}
@@ -51,7 +51,7 @@ public class TeamController {
 		LocalDate endDate = LocalDate.of(year + 1, 1, 1);
 
 		var response = matchRepository.getMatchesByTeamBetweenDates(teamName, startDate, endDate);
-		log.info("response :: {}", () -> utility.writeObjectAsString(response));
+//		log.info("response :: {}", () -> utility.writeObjectAsString(response));
 		
 		return response;
 	}

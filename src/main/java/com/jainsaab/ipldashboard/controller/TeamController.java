@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jainsaab.ipldashboard.exception.IplDashboardException;
+import com.jainsaab.ipldashboard.batch.config.ErrorEmailConfig;
 import com.jainsaab.ipldashboard.model.Match;
 import com.jainsaab.ipldashboard.model.RequestContext;
 import com.jainsaab.ipldashboard.model.Team;
@@ -25,6 +25,7 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 @RequiredArgsConstructor
 public class TeamController {
+	private final ErrorEmailConfig errorEmailConfig;
 	private final RequestContext requestContext;
 	private final TeamRepository teamRepository;
 	private final MatchRepository matchRepository;
@@ -37,36 +38,35 @@ public class TeamController {
 		log.info("response :: {}", () -> utility.writeObjectAsString(response));
 		return response;
 	}
-	
+
 	@GetMapping("/team/{teamName}")
 	public Team getTeam(@PathVariable String teamName) {
 		log.info("request came for '/team/{}'", teamName);
-		Team team = teamRepository.findByTeamName(teamName);
+		Team team = teamRepository.findByTeamName(teamName)
+				.orElseThrow(() -> utility.prepareIplDashboardException("team with name '%s' does not exist".formatted(teamName), null));
+		
 		team.setMatches(matchRepository.findLatestMatchesByTeam(teamName, 4));
+
+		log.info("errorEmailConfig :: {}", errorEmailConfig);
 		
 		log.info("response :: {}", () -> utility.writeObjectAsString(team));
-		
+
 		return team;
 	}
-	
+
 	@GetMapping("/team/{teamName}/matches")
 	public ResponseEntity<List<Match>> getMatchesForTeam(@PathVariable String teamName, @RequestParam Integer year) {
-		log.info("request came for '/team/{}/matches', year = '{}'", teamName, year); 
+		log.info("request came for '/team/{}/matches', year = '{}'", teamName, year);
 		log.debug("request context :: {}", requestContext);
-		
+
 		LocalDate startDate = LocalDate.of(year, 1, 1);
 		LocalDate endDate = LocalDate.of(year + 1, 1, 1);
 
 		List<Match> matches = matchRepository.getMatchesByTeamBetweenDates(teamName, startDate, endDate);
+
+		ResponseEntity<List<Match>> response = new ResponseEntity<List<Match>>(matches, HttpStatus.OK);
+
 		log.debug("response :: {}", () -> utility.writeObjectAsString(matches));
-		
-		ResponseEntity<List<Match>> response;
-		if (!matches.isEmpty()) {
-			response = new ResponseEntity<List<Match>>(matches, HttpStatus.OK);
-		} else {
-			throw new IplDashboardException("Team %s not found".formatted(teamName));
-		}
-		
 		return response;
 	}
 }

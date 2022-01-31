@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jainsaab.ipldashboard.batch.config.ErrorEmailConfig;
 import com.jainsaab.ipldashboard.model.Match;
 import com.jainsaab.ipldashboard.model.RequestContext;
 import com.jainsaab.ipldashboard.model.Team;
@@ -25,7 +24,6 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 @RequiredArgsConstructor
 public class TeamController {
-	private final ErrorEmailConfig errorEmailConfig;
 	private final RequestContext requestContext;
 	private final TeamRepository teamRepository;
 	private final MatchRepository matchRepository;
@@ -46,8 +44,6 @@ public class TeamController {
 				.orElseThrow(() -> utility.prepareIplDashboardException("team with name '%s' does not exist".formatted(teamName), null));
 		
 		team.setMatches(matchRepository.findLatestMatchesByTeam(teamName, 4));
-
-		log.info("errorEmailConfig :: {}", errorEmailConfig);
 		
 		log.info("response :: {}", () -> utility.writeObjectAsString(team));
 

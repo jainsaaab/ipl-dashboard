@@ -1,4 +1,6 @@
 import { React, useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import { TeamTile } from '../components/TeamTile';
 import { NavigationBar } from '../components/NavigationBar';
 
@@ -10,7 +12,12 @@ export const HomePage = () => {
     useEffect(
         () => {
             const fetchAllTeams = async () => {
-                const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/teams`);
+                const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/teams`, {
+                    method: "GET",
+                    headers: {
+                        "external-ref-id": `react-frontend-${uuidv4()}`
+                    }
+                });
                 const data = await response.json();
                 setTeams(data);
             }

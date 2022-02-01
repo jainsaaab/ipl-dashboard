@@ -1,11 +1,14 @@
 import { React, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom'
+import { PieChart } from 'react-minimal-pie-chart';
+import { v4 as uuidv4 } from 'uuid';
+
 import { MatchDetailCard } from '../components/MatchDetailCard';
 import { MatchSmallCard } from '../components/MatchSmallCard';
-import { PieChart } from 'react-minimal-pie-chart';
+import { NavigationBar } from '../components/NavigationBar';
+
 
 import './TeamPage.scss'
-import { NavigationBar } from '../components/NavigationBar';
 
 export const TeamPage = () => {
   const [team, setTeam] = useState({ matches: [] });
@@ -14,7 +17,12 @@ export const TeamPage = () => {
   useEffect(
     () => {
       const fetchTeam = async () => {
-        const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/team/${teamName}`);
+        const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/team/${teamName}`, {
+          method: "GET",
+          headers: {
+            "external-ref-id": `react-frontend-${uuidv4()}`
+          }
+        });
         const data = await response.json();
         setTeam(data);
       };

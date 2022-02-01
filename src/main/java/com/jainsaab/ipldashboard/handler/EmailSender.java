@@ -75,7 +75,7 @@ public class EmailSender {
 	
 	@Async("threadPoolTaskExecutor")
 	public void sendErrorMail(IplDashboardException ex, String externalRefId) throws AddressException, MessagingException, IOException {
-		log.info("Sending error mail for external-ref-id :: {}", externalRefId);
+		log.warn("Sending error mail for external-ref-id :: {}", externalRefId);
 		
 		Session session = getSession();		
 		Message msg = new MimeMessage(session);
@@ -95,6 +95,6 @@ public class EmailSender {
 		
 		Transport.send(msg);
 		
-		log.info("Error mail sent for external-ref-id :: {}", externalRefId);
+		log.warn("Error mail sent for external-ref-id :: {}", externalRefId);
 	}
 }

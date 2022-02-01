@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { MatchDetailCard } from '../components/MatchDetailCard';
 import { NavigationBar } from '../components/NavigationBar';
 import { YearSelector } from '../components/YearSelector';
+import { v4 as uuidv4 } from 'uuid';
 
 import './MatchPage.scss';
 
@@ -12,7 +13,12 @@ export const MatchPage = () => {
 
     useEffect(() => {
         const fetchMatches = async () => {
-            const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/team/${teamName}/matches?year=${year}`);
+            const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/team/${teamName}/matches?year=${year}`, {
+                method: "GET",
+                headers: {
+                    "external-ref-id": `react-frontend-${uuidv4()}`
+                }
+            });
             const data = await response.json();
             setMatches(data);
         }

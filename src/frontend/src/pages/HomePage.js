@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
+import { ApiHandler } from '../handlers/ApiHandler';
 
 import { TeamTile } from '../components/TeamTile';
 import { NavigationBar } from '../components/NavigationBar';
@@ -9,21 +10,7 @@ import './HomePage.scss'
 export const HomePage = () => {
     const [teams, setTeams] = useState([]);
 
-    useEffect(
-        () => {
-            const fetchAllTeams = async () => {
-                const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/teams`, {
-                    method: "GET",
-                    headers: {
-                        "external-ref-id": `react-frontend-${uuidv4()}`
-                    }
-                });
-                const data = await response.json();
-                setTeams(data);
-            }
-            fetchAllTeams();
-        }, []
-    );
+    useEffect(() => ApiHandler.getAllTeams().then(setTeams), []);
 
     return (
         <div>

@@ -9,27 +9,13 @@ import { NavigationBar } from '../components/NavigationBar';
 
 
 import './TeamPage.scss'
+import { ApiHandler } from '../handlers/ApiHandler';
 
 export const TeamPage = () => {
   const [team, setTeam] = useState({ matches: [] });
   const { teamName } = useParams();
 
-  useEffect(
-    () => {
-      const fetchTeam = async () => {
-        const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/team/${teamName}`, {
-          method: "GET",
-          headers: {
-            "external-ref-id": `react-frontend-${uuidv4()}`
-          }
-        });
-        const data = await response.json();
-        setTeam(data);
-      };
-
-      fetchTeam();
-    }, [teamName] // dependency list 
-  );
+  useEffect(() => ApiHandler.getTeamDetails(teamName).then(setTeam), [teamName]);
 
 
   if (!team || !team.teamName) return <h1>Team Not Found</h1>

@@ -6,24 +6,13 @@ import { YearSelector } from '../components/YearSelector';
 import { v4 as uuidv4 } from 'uuid';
 
 import './MatchPage.scss';
+import { ApiHandler } from '../handlers/ApiHandler';
 
 export const MatchPage = () => {
     const [matches, setMatches] = useState([]);
     const { teamName, year } = useParams();
 
-    useEffect(() => {
-        const fetchMatches = async () => {
-            const response = await fetch(`${process.env.REACT_APP_DATA_API_ROOT_URL}/team/${teamName}/matches?year=${year}`, {
-                method: "GET",
-                headers: {
-                    "external-ref-id": `react-frontend-${uuidv4()}`
-                }
-            });
-            const data = await response.json();
-            setMatches(data);
-        }
-        fetchMatches();
-    }, [teamName, year]);
+    useEffect(() => ApiHandler.getMatches(teamName, year).then(setMatches), [teamName, year]);
 
     return (
         <div>

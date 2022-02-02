@@ -20,7 +20,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jainsaab.ipldashboard.model.Match;
+import com.jainsaab.ipldashboard.model.MatchesForTeamByYearResponse;
 import com.jainsaab.ipldashboard.model.Team;
 
 @SpringBootTest
@@ -35,7 +35,7 @@ class TeamControllerTest {
 
 	private JacksonTester<List<Team>> allTeamsResponse;
 	private JacksonTester<Team> getTeamResponse;
-	private JacksonTester<List<Match>> getMatchesForTeamResponse;
+	private JacksonTester<MatchesForTeamByYearResponse> getMatchesForTeamByYearResponse;
 	
 	@BeforeEach
 	void init() {
@@ -50,8 +50,12 @@ class TeamControllerTest {
 				.perform(get("/team/Kolkata Knight Riders/matches")
 						.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
+	
+		assertEquals(HttpStatus.OK.value(), responseObj.getStatus());
+		MatchesForTeamByYearResponse response = getMatchesForTeamByYearResponse.readObject(new ByteArrayInputStream(responseObj.getContentAsByteArray()));
 		
-		assertEquals(HttpStatus.BAD_REQUEST.value(), responseObj.getStatus());
+		assertThat(response).isNotNull();
+		assertThat(response.getSelectedYear()).isEqualTo(2020);
 	}
 	
 	@Test
@@ -63,9 +67,10 @@ class TeamControllerTest {
 				.andReturn().getResponse();
 		
 		assertEquals(HttpStatus.OK.value(), responseObj.getStatus());
-		List<Match> response = getMatchesForTeamResponse.readObject(new ByteArrayInputStream(responseObj.getContentAsByteArray()));
+		MatchesForTeamByYearResponse response = getMatchesForTeamByYearResponse.readObject(new ByteArrayInputStream(responseObj.getContentAsByteArray()));
 		
-		assertThat(response).hasSizeGreaterThan(10);
+		assertThat(response).isNotNull();
+		assertThat(response.getMatchesForSelectedYear()).hasSizeGreaterThan(10);
 	}
 	
 	@Test
@@ -77,9 +82,10 @@ class TeamControllerTest {
 				.andReturn().getResponse();
 		
 		assertEquals(HttpStatus.OK.value(), responseObj.getStatus());
-		List<Match> response = getMatchesForTeamResponse.readObject(new ByteArrayInputStream(responseObj.getContentAsByteArray()));
-		
-		assertThat(response).hasSize(0);
+		MatchesForTeamByYearResponse response = getMatchesForTeamByYearResponse.readObject(new ByteArrayInputStream(responseObj.getContentAsByteArray()));
+	
+		assertThat(response).isNotNull();
+		assertThat(response.getMatchesForSelectedYear()).hasSize(0);
 	}
 
 	// public Iterable<Team> getAllTeams()

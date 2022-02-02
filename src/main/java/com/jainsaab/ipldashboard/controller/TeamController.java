@@ -3,7 +3,6 @@ package com.jainsaab.ipldashboard.controller;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.TreeSet;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,32 +41,38 @@ public class TeamController {
 	@GetMapping("/team/{teamName}")
 	public Team getTeam(@PathVariable String teamName) {
 		log.info("request came for '/team/{}'", teamName);
-		Team team = teamRepository.findByTeamName(teamName)
-				.orElseThrow(() -> utility.prepareIplDashboardException("team with name '%s' does not exist".formatted(teamName), null));
-		
+		Team team = teamRepository.findByTeamName(teamName).orElseThrow(() -> utility
+				.prepareIplDashboardException("team with name '%s' does not exist".formatted(teamName), null));
+
 		team.setMatches(matchRepository.findLatestMatchesByTeam(teamName, 4));
-		
+
 		log.info("response :: {}", () -> utility.writeObjectAsString(team));
 
 		return team;
 	}
 
 	@GetMapping("/team/{teamName}/matches")
-	public ResponseEntity<MatchesForTeamByYearResponse> getMatchesForTeamByYear(@PathVariable String teamName, @RequestParam Optional<Integer> year) {
+	public ResponseEntity<MatchesForTeamByYearResponse> getMatchesForTeamByYear(@PathVariable String teamName,
+			@RequestParam Optional<Integer> year) {
 		log.info("request came for '/team/{}/matches', year = '{}'", teamName, year);
+
+		List<Integer> years = matchRepository.getYearsTeamHasPlayed(teamName);
 		
-		TreeSet<Integer> years = matchRepository.getYearsTeamHasPlayed(teamName);
+		if (years.isEmpty())
+			throw utility.prepareIplDashboardException("No matches exist for team with name '%s'".formatted(teamName),
+					null);
 		
-		if (years.isEmpty()) throw utility.prepareIplDashboardException("No matches exist for team with name '%s'".formatted(teamName), null);
-		if (year.isEmpty()) year = Optional.of(years.last()); 		
-		
+		years.sort((a, b) -> b - a);
+		if (year.isEmpty())
+			year = years.stream().max((a, b) -> a - b);
+
 		LocalDate startDate = LocalDate.of(year.get(), 1, 1);
 		LocalDate endDate = LocalDate.of(year.get() + 1, 1, 1);
 
 		List<Match> matches = matchRepository.getMatchesByTeamBetweenDates(teamName, startDate, endDate);
 
 		MatchesForTeamByYearResponse response = new MatchesForTeamByYearResponse();
-		
+
 		response.setSelectedYear(year.get());
 		response.setAvailableYears(years);
 		response.setMatchesForSelectedYear(matches);

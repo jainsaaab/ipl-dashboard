@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom'
 import { PieChart } from 'react-minimal-pie-chart';
-import { v4 as uuidv4 } from 'uuid';
 
 import { MatchDetailCard } from '../components/MatchDetailCard';
 import { MatchSmallCard } from '../components/MatchSmallCard';

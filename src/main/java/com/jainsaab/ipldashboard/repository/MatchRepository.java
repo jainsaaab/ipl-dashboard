@@ -21,7 +21,7 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
 			LocalDate date2, String teamName2, LocalDate date3, LocalDate date4);
 
 	@Query("select distinct extract(YEAR from m.date) from Match m where (m.team1 = :teamName or m.team2 = :teamName)")
-	TreeSet<Integer> getYearsTeamHasPlayed(String teamName);
+	List<Integer> getYearsTeamHasPlayed(String teamName);
 	
 	default List<Match> findLatestMatchesByTeam(String teamName, int count) {
 		return findByTeam1OrTeam2OrderByDateDesc(teamName, teamName, PageRequest.of(0, count));

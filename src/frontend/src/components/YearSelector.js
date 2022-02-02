@@ -3,15 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './YearSelector.scss'
 
-export const YearSelector = ({ teamName }) => {
-    let years = [];
-    const startYear = process.env.REACT_APP_DATA_START_YEAR;
-    const endYear = process.env.REACT_APP_DATA_END_YEAR;
-
-    for (let i = endYear; i >= startYear; i--) {
-        years.push(i);
-    }
-
+export const YearSelector = ({ teamName, years }) => {
     return (
         <ol className='YearSelector'>
             {

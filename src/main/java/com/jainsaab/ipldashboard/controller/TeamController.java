@@ -23,7 +23,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@CrossOrigin
 @RequiredArgsConstructor
 public class TeamController {
 	private final TeamRepository teamRepository;
@@ -77,7 +76,7 @@ public class TeamController {
 		response.setAvailableYears(years);
 		response.setMatchesForSelectedYear(matches);
 
-		log.debug("response :: {}", () -> utility.writeObjectAsString(matches));
+		log.debug("response :: {}", () -> utility.writeObjectAsString(response));
 		return ResponseEntity.ok(response);
 	}
 }

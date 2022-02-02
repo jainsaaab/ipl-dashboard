@@ -9,7 +9,9 @@ import { ApiHandler } from '../handlers/ApiHandler';
 
 export const MatchPage = () => {
     const [matches, setMatches] = useState({selectedYear: 0, availableYears: [], matchesForSelectedYear: []});
-    const { teamName, year } = useParams();
+    let { teamName, year } = useParams();
+
+    if (undefined === year) year = "";
 
     useEffect(() => ApiHandler.getMatches(teamName, year).then(setMatches), [teamName, year]);
 

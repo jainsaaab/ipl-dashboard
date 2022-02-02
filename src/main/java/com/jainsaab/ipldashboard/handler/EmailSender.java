@@ -36,6 +36,7 @@ public class EmailSender {
 	private final ApplicationProperties applicationProperties;
 	
 	private static final Properties PROPS;
+	private Session session;
 	
 	static {
 		PROPS = new Properties();
@@ -46,12 +47,14 @@ public class EmailSender {
 	}
 	
 	private Session getSession() {
-		return Session.getInstance(PROPS, new javax.mail.Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(errorEmailConfig.getUsername(), errorEmailConfig.getPassword());
-			}
-		});
+		if (null == session)
+			session = Session.getInstance(PROPS, new javax.mail.Authenticator() {
+				@Override
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(errorEmailConfig.getUsername(), errorEmailConfig.getPassword());
+				}
+			});
+ 		return session;
 	}
 	
 	private String getSubject(IplDashboardException ex) {

@@ -10,7 +10,9 @@ import './HomePage.scss'
 export const HomePage = () => {
     const [teams, setTeams] = useState([]);
 
-    useEffect(() => ApiHandler.getAllTeams().then(setTeams), []);
+    useEffect(() => ApiHandler.getAllTeams().then((resp) => {
+        if(resp.ok) setTeams(resp.body);
+    }), []);
 
     return (
         <div>

@@ -8,7 +8,7 @@ const getApiCall = async (endpoint) => {
         }
     })
 
-    return await response.json();
+    return {ok: response.ok, body: await response.json()};
 }
 
 const getAllTeams = async () => {

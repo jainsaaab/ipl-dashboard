@@ -6,14 +6,32 @@ import { YearSelector } from '../components/YearSelector';
 
 import './MatchPage.scss';
 import { ApiHandler } from '../handlers/ApiHandler';
+import { ErrorMsg } from '../components/ErrorMsg';
 
 export const MatchPage = () => {
-    const [matches, setMatches] = useState({selectedYear: 0, availableYears: [], matchesForSelectedYear: []});
+    const [matches, setMatches] = useState({ selectedYear: 0, availableYears: [], matchesForSelectedYear: [] });
+    const [error, setError] = useState(false);
+    const [errMsg, setErrMsg] = useState("");
+
     let { teamName, year } = useParams();
 
     if (undefined === year) year = "";
 
-    useEffect(() => ApiHandler.getMatches(teamName, year).then(setMatches), [teamName, year]);
+    useEffect(() => {
+        ApiHandler.getMatches(teamName, year)
+            .then(resp => {
+                setError(!resp.ok);
+                if (resp.ok) setMatches(resp.body);
+                else setErrMsg(resp.body);
+            })
+    }, [teamName, year]);
+
+    if (error) return (
+        <div>
+            <NavigationBar />
+            <ErrorMsg message={errMsg} />
+        </div>
+    )
 
     return (
         <div>

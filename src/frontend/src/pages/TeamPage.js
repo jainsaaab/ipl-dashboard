@@ -14,10 +14,20 @@ export const TeamPage = () => {
   const [team, setTeam] = useState({ matches: [] });
   const { teamName } = useParams();
 
-  useEffect(() => ApiHandler.getTeamDetails(teamName).then(setTeam), [teamName]);
+  useEffect(() => {
+    ApiHandler.getTeamDetails(teamName)
+      .then(resp => {
+        if (resp.ok) setTeam(resp.body)
+      })
+  }, [teamName]);
 
 
-  if (!team || !team.teamName) return <h1>Team Not Found</h1>
+  if (!team || !team.teamName) return (
+    <div>
+      <NavigationBar />
+      <h1>Team Not Found</h1>
+    </div>
+  )
 
   return (
     <div>

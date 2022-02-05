@@ -52,4 +52,4 @@ To use error event e-mail functionality please define following **environment va
 ---
 
 I built this project by following code with me series from Koushik Kothagal (java brains).
-Thank you so much Koushik Kothagal for your help.
+Thank you so much Koushik for your help.

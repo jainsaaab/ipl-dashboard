@@ -27,7 +27,7 @@ docker build -t jainsaab/ipl-dashboard .
 
 Run this command to run the docker container
 ```bash
-docker run -o 8080:8080 jainsaab/ipl-dashboard
+docker run -p 8080:8080 jainsaab/ipl-dashboard
 ```
 ---
 

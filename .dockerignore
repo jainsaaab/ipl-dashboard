@@ -1,0 +1,4 @@
+.mvn/*
+src/*
+pom.xml
+**/*.class

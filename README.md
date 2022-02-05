@@ -17,6 +17,6 @@ To use error event e-mail functionality please define following **environment va
 
 ### TODO
 
-- [ ] Containerize the service.
+- [x] Containerize the service.
 - [ ] Deploy the code in AWS.
 - [ ] Create a seperate service for sending mails.

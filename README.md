@@ -8,6 +8,29 @@ Full stack project using **React** framework for front-end and **spring-boot** f
 
 ---
 
+Front-end code is located at src/frontend/
+to build the front-end code cd into ./src/frontend/ and run following command
+```bash
+npm run build
+```
+this command will create a production build of front-end code and copy it to src/main/resources/public
+
+Run following command to package the whole application
+```bash
+./mvnw clean package
+```
+
+Run this command to build docker image
+```bash
+docker build -t jainsaab/ipl-dashboard .
+```
+
+Run this command to run the docker container
+```bash
+docker run -o 8080:8080 jainsaab/ipl-dashboard
+```
+---
+
 To use error event e-mail functionality please define following **environment variables** (username has to be a gmail account).
   - IPLDASHBOARD_ERROR_EMAIL_USERNAME (gmail username from which emails will be sent)
   - IPLDASHBOARD_ERROR_EMAIL_PASSWORD
@@ -19,4 +42,4 @@ To use error event e-mail functionality please define following **environment va
 
 - [x] Containerize the service.
 - [ ] Deploy the code in AWS.
-- [ ] Create a seperate service for sending mails.
+- [ ] Create a seperate service for sending e-mails.

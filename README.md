@@ -34,6 +34,9 @@ sudo docker run \
 -p 8080:8080 \
 jainsaab/ipl-dashboard
 ```
+
+now you can access sites home page at `localhost:8080`
+
 ---
 
 To use error event e-mail functionality please define following **environment variables** (username has to be a gmail account).

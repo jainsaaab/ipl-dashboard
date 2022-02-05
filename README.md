@@ -27,7 +27,12 @@ docker build -t jainsaab/ipl-dashboard .
 
 Run this command to run the docker container
 ```bash
-docker run -p 8080:8080 jainsaab/ipl-dashboard
+sudo docker run \
+--env IPLDASHBOARD_ERROR_EMAIL_USERNAME=$IPLDASHBOARD_ERROR_EMAIL_USERNAME \
+--env IPLDASHBOARD_ERROR_EMAIL_PASSWORD=$IPLDASHBOARD_ERROR_EMAIL_PASSWORD \
+--env IPLDASHBOARD_ERROR_EMAIL_SENDTO=$IPLDASHBOARD_ERROR_EMAIL_SENDTO \
+-p 8080:8080 \
+jainsaab/ipl-dashboard
 ```
 ---
 

@@ -32,7 +32,7 @@ public class Utility {
 		else ex = new IplDashboardException(message);
 		
 		ex.setCorelationId(requestContext.getCrid());
-		ex.setExternalReferanceId(requestContext.getExternalRefId());
+		ex.setExternalReferenceId(requestContext.getExternalRefId());
 		ex.setTimestamp(requestContext.getTimestamp());
 		ex.setErrorMessage(message);
 		

@@ -65,15 +65,8 @@ public class EmailSender {
 	String getContent(IplDashboardException ex) {
 		String header = "Service: %s, priority: %s, errorMessage: %s, timestamp : %s"
 				.formatted(applicationProperties.getApplicationName(), ex.getPriority(), ex.getErrorMessage(), ex.getTimestamp());
-		StringWriter sw = new StringWriter();
-		ex.printStackTrace(new PrintWriter(sw));
-		String stackTrace = sw.toString();
-		try {
-			sw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return header.concat("\n").concat(stackTrace);
+		
+		return header.concat("\n").concat(ex.getStackTraceStr());
 	}
 	
 	@Async("threadPoolTaskExecutor")

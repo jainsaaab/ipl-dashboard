@@ -15,7 +15,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "stackTraceStr")
 @JsonIncludeProperties({ "errorMessage", "corelationId", "externalReferenceId", "timestamp", "priority", "stacktrace" })
 public class IplDashboardException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

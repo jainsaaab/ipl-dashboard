@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import com.jainsaab.ipldashboard.config.ApplicationProperties;
 import com.jainsaab.ipldashboard.exception.IplDashboardException;
 import com.jainsaab.ipldashboard.model.SendErrorEmailRequest;
+import com.jainsaab.ipldashboard.utils.Utility;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +34,12 @@ public class EmailSender {
 		this.restTemplate = restTemplate;
 		this.emailServiceURI = new URI(emailServiceURL);
 		this.sendTo = sendTo;
+		
+		for (String email : sendTo) {
+			if (!Utility.isValidEmailAddress(email)) {
+				throw new RuntimeException(String.format("'%s' is not a valid email address", email));
+			}
+		}
 	}
 
 	@Async("threadPoolTaskExecutor")

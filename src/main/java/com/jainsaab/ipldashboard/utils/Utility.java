@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jainsaab.ipldashboard.constant.Constants;
 import com.jainsaab.ipldashboard.exception.IplDashboardException;
 import com.jainsaab.ipldashboard.model.RequestContext;
 
@@ -37,5 +38,9 @@ public class Utility {
 		ex.setErrorMessage(message);
 		
 		return ex;
+	}
+	
+	public static boolean isValidEmailAddress(String email) {
+	    return email.matches(Constants.EMAIL_REGEX);
 	}
 }
